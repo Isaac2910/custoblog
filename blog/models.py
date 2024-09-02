@@ -1,12 +1,12 @@
 from django.db import models
 
 # Create your models here.
-# blog/models.py
+
 
 from django.conf import settings
 
 from django.db import models
-
+from PIL import Image
 
 
 
@@ -21,7 +21,14 @@ class Photo(models.Model):
 
     date_created = models.DateTimeField(auto_now_add=True)
 
- 
+    IMAGE_MAX_SIZE = (800, 800)
+    
+    def resize_image(self):
+        image = Image.open(self.image)
+        image.thumbnail(self.IMAGE_MAX_SIZE)
+        # sauvegarde de l’image redimensionnée dans le système de fichiers
+        # ce n’est pas la méthode save() du modèle !
+        image.save(self.image.path)
 
  
 

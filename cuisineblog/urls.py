@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.contrib.auth.views import (
+    LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView)
 #from django.contrib.auth.views import LoginViews
 
 
@@ -32,7 +33,21 @@ urlpatterns = [
     path('logout/', authentication.views.logout_user, name='logout'),
     path('home/', blog.views.home, name='home'),
     path('signup/', authentication.views.signup_page, name='signup'),
-    path('photo/upload/', blog.views.photo_upload, name='photo_upload')
+    path('photo/upload/', blog.views.photo_upload, name='photo_upload'),
+
+    path('change-password/', PasswordChangeView.as_view(
+        template_name='authentication/password_change_form.html'),
+         name='password_change'
+    ),
+    path('change-password-done/', PasswordChangeDoneView.as_view(
+        template_name='authentication/password_change_done.html'),
+         name='password_change_done'
+    ),
+    path('blog/create', blog.views.blog_and_photo_upload, name='blog_create'),
+    path('blog/<int:blog_id>', blog.views.view_blog, name='view_blog'),
+    path('photo/upload-multiple/', blog.views.create_multiple_photos,
+    name='create_multiple_photos'),
+    path('blog/<int:blog_id>/edit', blog.views.edit_blog, name='edit_blog'),
 
 ]
 
